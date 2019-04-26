@@ -30,6 +30,16 @@ func ComputeJA3FromSegment(payload []byte) (*JA3, error) {
 	return &ja3, err
 }
 
+// ComputeJA3FromHandshake parses the handshake and returns the populated JA3
+// object or the encountered parsing error.
+// Note: usually you'll want to use ComputeJA3FromSegment unless you're
+// working directly with the raw data that makes up a TLS Handshake buffer.
+func ComputeJA3FromHandshake(handshake []byte) (*JA3, error) {
+	ja3 := JA3{}
+	err := ja3.parseHandshake(handshake)
+	return &ja3, err
+}
+
 // GetJA3ByteString returns the JA3 string as a byte slice for more efficient handling. This function uses caching, so
 // repeated calls to this function on the same JA3 object will not trigger any new calculations.
 func (j *JA3) GetJA3ByteString() []byte {
